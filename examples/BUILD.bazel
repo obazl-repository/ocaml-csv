@@ -1,0 +1,14 @@
+load("@rules_ocaml//build:rules.bzl", "ocaml_binary", "ocaml_exec_module")
+
+ocaml_binary(
+    name   = "example.exe",
+    main   = ":Example",
+    data   = ["example1.csv", "example2.csv"], # runtime deps
+)
+
+ocaml_exec_module(
+    name   = "Example",
+    struct = "example.ml",
+    deps   = ["//src:csv", "@ocaml//unix"]
+)
+

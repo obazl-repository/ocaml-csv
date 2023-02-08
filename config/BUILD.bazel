@@ -1,0 +1,28 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@rules_ocaml//build:rules.bzl",
+     "ocaml_binary",
+     "ocaml_library",
+     "ocaml_ns_library",
+     "ocaml_exec_module",
+     "ocaml_module",
+)
+
+DEPS_1 = [
+    "@ocaml//str",
+    "@ocaml//unix"
+]
+
+##############################
+####  Executable Targets  ####
+ocaml_binary(
+    name     = "pp.exe",
+    main     = ":Pp",
+    visibility = ["//visibility:public"],
+)
+
+ocaml_exec_module(
+    name          = "Pp",
+    struct        = "pp.ml",
+    deps          = DEPS_1,
+)

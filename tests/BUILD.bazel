@@ -1,0 +1,94 @@
+load("@rules_ocaml//build:rules.bzl",
+     "ocaml_exec_module",
+     "ocaml_test",
+)
+
+## for //config:pp.exe:
+exports_files(["test.ml", "test_lwt.ml", "test.pp.ml"])
+
+DEPS_1 = ["//src:csv"]
+DEPS_2 = ["//lwt:csv_lwt", "@lwt//lib/unix"]
+
+test_suite(
+    name = "tests",
+    tests = [
+        "csv_test",
+        "csv_header_test",
+        "csv_write_test",
+        "csv_fix_test",
+        "csv_lwt_test",
+        "//csvtool:csvtool_test"
+   ]
+)
+
+##############################
+ocaml_test(
+    name     = "csv_test",
+    main     = ":Test",
+    data = glob(["*.csv"]),
+    ## strip 'tests/' from path:
+    data_prefix_map = {"tests/": ""},
+    timeout = "short"
+)
+
+ocaml_exec_module(
+    name          = "Test",
+    struct        = "//:test.ml",
+    deps          = DEPS_1,
+)
+
+ocaml_test(
+    name     = "csv_header_test",
+    main     = ":Test_header",
+    data = glob(["*.csv"]),
+    data_prefix_map = {"tests/": ""},
+    timeout = "short"
+)
+
+ocaml_exec_module(
+    name          = "Test_header",
+    struct        = "test_header.ml",
+    deps          = DEPS_1,
+)
+
+ocaml_test(
+    name     = "csv_write_test",
+    main     = ":Test_write",
+    data = glob(["*.csv"]),
+    data_prefix_map = {"tests/": ""},
+    timeout = "short"
+)
+
+ocaml_exec_module(
+    name          = "Test_write",
+    struct        = "test_write.ml",
+    deps          = DEPS_1,
+)
+
+ocaml_test(
+    name     = "csv_fix_test",
+    main     = ":Test_fix",
+    data = glob(["*.csv"]),
+    data_prefix_map = {"tests/": ""},
+    timeout = "short"
+)
+
+ocaml_exec_module(
+    name          = "Test_fix",
+    struct        = "test_fix.ml",
+    deps          = DEPS_1,
+)
+
+ocaml_test(
+    name     = "csv_lwt_test",
+    main     = ":Test_lwt",
+    data = glob(["*.csv"]),
+    data_prefix_map = {"tests/": ""},
+    timeout = "short"
+)
+
+ocaml_exec_module(
+    name          = "Test_lwt",
+    struct        = "//:test_lwt.ml",
+    deps          = DEPS_2,
+)

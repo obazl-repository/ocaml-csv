@@ -1,0 +1,62 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@bazel_skylib//rules:diff_test.bzl", "diff_test")
+
+load("@rules_ocaml//build:rules.bzl",
+     "ocaml_binary",
+     "ocaml_library",
+     "ocaml_ns_library",
+     "ocaml_exec_module",
+     "ocaml_module",
+)
+
+DEPS_1 = [
+    "//src:csv",
+    "@ocaml//unix",
+    "@uutf//lib/uutf"
+]
+
+##############################
+ocaml_binary(
+    name     = "csvtool.exe",
+    main     = ":Csvtool",
+    visibility = ["//visibility:public"],
+)
+
+ocaml_exec_module(
+    name          = "Csvtool",
+    struct        = "csvtool.ml",
+    deps          = DEPS_1,
+)
+
+######################## Modules & Signatures ########################
+############################# Rules ##################################
+
+########
+genrule(
+    outs  = [
+        "test-utf8.output"
+    ],
+    name  = "__test-utf8.output__",
+    srcs  = [
+        ":test-utf8.csv"
+    ],
+    cmd   = " ".join([
+        "$(execpath //csvtool:csvtool.exe)",
+        "readable",             # subcommand
+        "$(location :test-utf8.csv)",
+        "> $@"
+    ]),
+    exec_tools = [
+        "//csvtool:csvtool.exe"
+    ]
+)
+
+##########
+diff_test(
+    name  = "csvtool_test",
+    file1  = ":test-utf8.output",
+    file2  = ":test-utf8.expected",
+    timeout = "short"
+)
+

@@ -1,0 +1,28 @@
+genrule(
+    name = "csvgen",
+    outs = [
+        "csv.ml",
+        "csv_lwt.ml",
+        "test.ml", "test_lwt.ml"
+    ],
+    srcs = [
+        "//src:csv.pp.ml", "//src:csv_memory.ml",
+        "//lwt:csv_lwt.mli",
+        "//tests:test.pp.ml",
+    ],
+    exec_tools = ["//config:pp.exe"],
+    cmd  = "\n".join([
+        # "echo PWD: $$PWD;",
+        # "echo BINDIR: $(BINDIR);",
+        # "echo GENDIR: $(GENDIR);",
+        # "echo OUTS: $(OUTS);",
+        # "echo RULEDIR: $(RULEDIR);",
+
+        "$(execpath //config:pp.exe);",
+        "cp src/csv.ml $(RULEDIR)/;",
+        "cp lwt/csv_lwt.ml $(RULEDIR)/;",
+        "cp tests/test.ml $(RULEDIR)/;",
+        "cp tests/test_lwt.ml $(RULEDIR)/;",
+    ]),
+    visibility = ["//visibility:public"]
+)

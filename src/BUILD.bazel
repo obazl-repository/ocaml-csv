@@ -1,0 +1,77 @@
+package(default_visibility = ["//visibility:public"])
+
+load("@rules_ocaml//build:rules.bzl",
+     "ocaml_archive",
+     "ocaml_ns_archive",
+     "ocaml_module",
+)
+
+exports_files([
+    "csv.pp.ml", "csv_memory.ml", # for //:csvgen
+    "csv_utils.ml" # for //lwt
+])
+
+
+DEPS_1 = [
+    "@bytes//lib/bytes"
+]
+
+OPTS_1 = [
+        "-safe-string"
+]
+
+#############################
+####  Aggregate Targets  ####
+
+#################
+ocaml_ns_archive(  #1
+    name       = "csv",
+    ns         = "csv",
+    manifest = [
+        ":Csv",
+        ":Csv_row",
+        ":Csv_utils"
+    ],
+)
+
+######################## Modules & Signatures ########################
+ocaml_module(
+    name          = "Csv",
+    struct        = "//:csv.ml",
+    sig           = "csv.mli",
+    opts          = OPTS_1,
+    deps          = DEPS_1 + [
+        ":Csv_row",
+        ":Csv_utils"
+    ],
+)
+
+ocaml_module(
+    name          = "Csv_row",
+    struct        = "csv_row.ml",
+    opts          = OPTS_1,
+    deps          = DEPS_1,
+)
+
+ocaml_module(
+    name          = "Csv_utils",
+    struct        = "csv_utils.ml",
+    opts          = OPTS_1,
+    deps          = DEPS_1,
+)
+
+############################# Rules ##################################
+
+## omitted:
+## (chdir %{project_root} (run :config/pp.exe ...))
+
+# genrule(
+#     name = "csvgen",
+#     outs = ["csv.ml"],
+#     srcs = ["csv.pp.ml", "csv_memory.ml"],
+#     exec_tools = ["//config:pp.exe"],
+#     cmd  = "\n".join([
+#         "$(execpath //config:pp.exe);",
+#         "cp src/csv.ml $@;",
+#     ])
+# )
