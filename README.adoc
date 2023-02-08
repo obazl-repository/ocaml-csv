@@ -1,0 +1,34 @@
+= OCaml CSV (Bazel-enabled)
+
+link:README.original.md[Original README]
+
+== Quickstart
+
+* Run all tests:
+
+    bazel test tests
+
+* Build all targets:
+
+    bazel build //...
+
+* Build `csvtool`:
+
+    bazel build csvtool:csvtool.exe
+
+* Build library:
+
+    bazel build src:csv
+
+== Toolchains
+
+By default the compiler used is `ocamlopt.opt`. To use a different
+compiler, pass it using `--config=<compiler>`. For example, to run the
+tests using `ocamlc.byte`:
+
+    bazel test tests --config=ocamlc.byte
+
+
+NOTE: Executables used as "tools" are always built with
+`ocamlopt.opt`. For example, `//config:pp.exe` is a tool dependency of
+`//csvtool:\__test-utf8.output__`, so it is built with `ocamlopt.opt`.

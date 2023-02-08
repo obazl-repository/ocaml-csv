@@ -11,20 +11,11 @@ exports_files([
     "csv_utils.ml" # for //lwt
 ])
 
-
-DEPS_1 = [
-    "@bytes//lib/bytes"
-]
-
-OPTS_1 = [
-        "-safe-string"
-]
-
-#############################
-####  Aggregate Targets  ####
+DEPS_1 = ["@bytes//lib/bytes"]
+OPTS_1 = ["-safe-string"]
 
 #################
-ocaml_ns_archive(  #1
+ocaml_ns_archive(
     name       = "csv",
     ns         = "csv",
     manifest = [
@@ -34,7 +25,7 @@ ocaml_ns_archive(  #1
     ],
 )
 
-######################## Modules & Signatures ########################
+#############
 ocaml_module(
     name          = "Csv",
     struct        = "//:csv.ml",
@@ -59,19 +50,3 @@ ocaml_module(
     opts          = OPTS_1,
     deps          = DEPS_1,
 )
-
-############################# Rules ##################################
-
-## omitted:
-## (chdir %{project_root} (run :config/pp.exe ...))
-
-# genrule(
-#     name = "csvgen",
-#     outs = ["csv.ml"],
-#     srcs = ["csv.pp.ml", "csv_memory.ml"],
-#     exec_tools = ["//config:pp.exe"],
-#     cmd  = "\n".join([
-#         "$(execpath //config:pp.exe);",
-#         "cp src/csv.ml $@;",
-#     ])
-# )
