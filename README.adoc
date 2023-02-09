@@ -2,6 +2,9 @@
 
 link:README.original.md[Original README]
 
+WARNING: 2/8/23 Probably won't work atm - the `rules_ocaml` repo needs to be
+updated, which should happen in the next day or so.
+
 == Quickstart
 
 * Run all tests:
