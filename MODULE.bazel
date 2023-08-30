@@ -1,0 +1,37 @@
+module(
+    name = "ocaml-csv",
+    version = "1.0.0",
+    compatibility_level = 1,
+)
+
+bazel_dep(name = "platforms", version = "0.0.7")
+bazel_dep(name = "bazel_skylib", version = "1.4.2")
+
+bazel_dep(name = "rules_ocaml", version = "1.0.0")
+bazel_dep(name = "obazl", version = "1.0.0")
+
+bazel_dep(name = "cc_config", version = "1.0.0",
+          dev_dependency = True)
+
+bazel_dep(name = "ocaml", version = "0.0.0")
+
+bazel_dep(name = "base", version = "0.16.3")
+bazel_dep(name = "bytes", version = "0.0.0")
+bazel_dep(name = "lwt", version = "5.7.0") # {>= "2.4.7"}
+bazel_dep(name = "uutf", version = "1.0.3")
+
+register_toolchains("@ocaml//toolchain/selectors/local:vmvm")
+register_toolchains("@ocaml//toolchain/selectors/local:vmsys")
+register_toolchains("@ocaml//toolchain/selectors/local:sysvm")
+register_toolchains("@ocaml//toolchain/selectors/local:syssys")
+register_toolchains("@ocaml//toolchain/selectors/local:_vm")
+register_toolchains("@ocaml//toolchain/selectors/local:__")
+register_toolchains("@ocaml//toolchain/profiles:sys-dev")
+register_toolchains("@ocaml//toolchain/profiles:sys-dbg")
+register_toolchains("@ocaml//toolchain/profiles:sys-opt")
+register_toolchains("@ocaml//toolchain/profiles:vm-dev")
+register_toolchains("@ocaml//toolchain/profiles:vm-dbg")
+register_toolchains("@ocaml//toolchain/profiles:vm-opt")
+register_toolchains("@ocaml//toolchain/profiles:default-dev")
+register_toolchains("@ocaml//toolchain/profiles:default-dbg")
+register_toolchains("@ocaml//toolchain/profiles:default-opt")

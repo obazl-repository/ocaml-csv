@@ -17,7 +17,7 @@ OPTS_1 = ["-safe-string"]
 #################
 ocaml_ns_archive(
     name       = "csv",
-    ns         = "csv",
+    # ns         = "csv",
     manifest = [
         ":Csv",
         ":Csv_row",

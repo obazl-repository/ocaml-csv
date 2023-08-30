@@ -24,7 +24,7 @@ OPTS_1 = [
 #################
 ocaml_ns_archive(
     name       = "csv_lwt",
-    ns         = "csv_lwt",
+    # ns         = "csv_lwt",
     manifest = [
         ":Csv_lwt",
         ":Csv_utils"
